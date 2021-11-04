@@ -1,19 +1,19 @@
 name: 'IQ CPM Github Actions'
 description: 'IQCPM Github Actions to login to Azure'
-inputs:
-  aks-login-resource-group:
-    description: AKS's resource group
-    required: true
-  aks-login-cluster-name:
-    description: AKS's cluster name
-    required: true
-  trail-script:
-    description: script that is executed after login
-    required: false
-outputs:
-  logged-in:
-    description: "login result (true/false)"
-    value: ${{ steps.azure-login.outputs.logged-in }}
+#inputs:
+#  aks-login-resource-group:
+#    description: AKS's resource group
+#    required: false
+#  aks-login-cluster-name:
+#    description: AKS's cluster name
+#    required: false
+#  trail-script:
+#    description: script that is executed after login
+#    required: false
+#outputs:
+#  logged-in:
+#    description: "login result (true/false)"
+#    value: ${{ steps.azure-login.outputs.logged-in }}
 runs:
   using: "composite"
   steps:
