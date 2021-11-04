@@ -1,5 +1,5 @@
-name: 'LN MVR Github Actions'
-description: 'MVR Github Actions to login to AKS'
+name: 'IQ CPM Github Actions'
+description: 'IQCPM Github Actions to login to AKS'
 inputs:
   aks-login-resource-group:
     description: AKS's resource group
