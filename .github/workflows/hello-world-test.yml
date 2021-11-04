@@ -25,11 +25,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Check azure login status
-      - name: Azure login
-        id: azure-login
-        uses: ./.github/actions/azure-login
-        
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true 
+     
+      - run: |
+          Get-AzVM -ResourceGroupName "ResourceGroup11"        
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
