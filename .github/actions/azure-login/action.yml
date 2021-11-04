@@ -1,0 +1,34 @@
+name: 'LN MVR Github Actions'
+description: 'MVR Github Actions to login to Azure'
+inputs:
+  aks-login-resource-group:
+    description: AKS's resource group
+    required: true
+  aks-login-cluster-name:
+    description: AKS's cluster name
+    required: true
+  trail-script:
+    description: script that is executed after login
+    required: false
+outputs:
+  logged-in:
+    description: "login result (true/false)"
+    value: ${{ steps.azure-login.outputs.logged-in }}
+runs:
+  using: "composite"
+  steps:
+    - name: AKS login
+      id: azure-login
+      shell: bash
+      run: |
+        echo "-------- AZURE-CLI version check ---------------"
+        az --version
+        echo "------------------------------------------------"
+        az login --identity
+        login=false
+        if [ "$?" -eq "0" ]; then
+          login=true
+        fi
+        echo "::set-output name=logged-in::$login"
+        echo "azure_logged_in=$login" >> $GITHUB_ENV
+        ${{ inputs.trail-script }}

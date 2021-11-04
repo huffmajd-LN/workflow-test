@@ -1,0 +1,30 @@
+name: 'LN MVR Github Actions'
+description: 'MVR Github Actions to login to AKS'
+inputs:
+  aks-login-resource-group:
+    description: AKS's resource group
+    required: true
+  aks-login-cluster-name:
+    description: AKS's cluster name
+    required: true
+outputs:
+  kubeconfig:
+    description: "kubeconfig content"
+    value: ${{ steps.aks-login.outputs.kubeconfig }}
+runs:
+  using: "composite"
+  steps:
+    - name: AKS login
+      id: aks-login
+      shell: bash
+      run: |
+        if [ "${{env.azure_logged_in}}" = "false" ]; then
+          echo "Azure CLI isn't logged in yet."
+          exit 1
+        fi
+        az aks get-credentials --resource-group ${{ inputs.aks-login-resource-group }} --name ${{ inputs.aks-login-cluster-name }}
+        kubeconfig="$(cat /home/runner/.kube/config)"
+        kubeconfig="${kubeconfig//'%'/'%25'}"
+        kubeconfig="${kubeconfig//$'\n'/'%0A'}"
+        kubeconfig="${kubeconfig//$'\r'/'%0D'}"
+        echo "::set-output name=kubeconfig::$kubeconfig"
